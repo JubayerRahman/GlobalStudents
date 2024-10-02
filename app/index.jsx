@@ -32,65 +32,10 @@ const Index = () => {
         }
     }
 
-    // Fetch counselor data
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axiosInstance.get(`/counsellors/${user}`);
-                setData(res.data);
-            } catch (error) {
-                console.error("Error fetching data", error);
-            }
-        };
-
-        fetchData();
-
-    }, []);
     
-    const interval = setInterval(() => {
-        console.log("I am On")
-        checkForNewData();
-    }, 60000);
+    
 
-    const checkForNewData = async () => {
-        try {
-            const res = await axiosInstance.get(`/counsellors/${user}`);
-            setNewData(res.data);
-            // Compare lengths
-            if (newData && data) {
-                console.log(newData.length, data.length);
-                if (newData.length === data.length){
-                    return
-                }
-                
-                if (newData.length > data.length) {
-                    showNotification();
-                    setData(newData);
-                    return
-                }
-            }
-        } catch (error) {
-            console.error("Error checking for new data", error);
-        }
-    };
-
-    const showNotification = async () => {
-        const { status } = await Notifications.getPermissionsAsync();
-        if (status !== 'granted') {
-            alert("Permission for notifications is not granted!!");
-            return;
-        }
-
-        await Notifications.scheduleNotificationAsync({
-            content: {
-                title: "New Student Assigned",
-                body: "A new student has been assigned to you.",
-                sound: true,
-            },
-            trigger: null,
-        });
-    };
-
+  
     return (
         <View style={styles.mainDiv}>
             <View style={styles.container}>
